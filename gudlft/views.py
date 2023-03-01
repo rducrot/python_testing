@@ -1,21 +1,9 @@
-import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-
-def load_clubs():
-    with open('clubs.json') as c:
-        clubs_list = json.load(c)['clubs']
-        return clubs_list
-
-
-def load_competitions():
-    with open('competitions.json') as comps:
-        competitions_list = json.load(comps)['competitions']
-        return competitions_list
-
+from .models import load_clubs, load_competitions
 
 app = Flask(__name__)
-app.secret_key = 'something_special'
+app.config.from_object('config')
 
 competitions = load_competitions()
 clubs = load_clubs()
