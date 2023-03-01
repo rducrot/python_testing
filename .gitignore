@@ -1,7 +1,8 @@
 bin
 include
 lib
+venv
 .Python
-tests/
 .envrc
+.idea
 __pycache__
