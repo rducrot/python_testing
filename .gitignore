@@ -2,7 +2,9 @@ bin
 include
 lib
 venv
+.DS_Store
 .Python
 .envrc
 .idea
+.pytest_cache
 __pycache__
