@@ -1,1 +1,1 @@
-secret_key = 'something_special'
+SECRET_KEY = 'something_special'
