@@ -7,6 +7,10 @@ class TestViews:
     def test_index(self, client):
         response = client.get('/')
         assert response.status_code == 200
+    
+    def test_clubs_points(self, client):
+        response = client.get('/clubs-points')
+        assert response.status_code == 200
 
     def test_login(self, client, club_fixture):
         data = {"email": club_fixture["email"]}

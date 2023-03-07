@@ -15,5 +15,6 @@
     {% for message in get_flashed_messages() %}
         {{ message }}
     {% endfor %}
+    <a href="{{ url_for('clubs_points') }}">Show clubs' points</a>
 </body>
 </html>

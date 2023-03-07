@@ -14,6 +14,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/clubs-points')
+def clubs_points():
+    return render_template('clubs_points.html', clubs=clubs)
+
+
 @app.route('/show-summary', methods=['POST'])
 def show_summary():
     try:
