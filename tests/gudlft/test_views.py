@@ -7,7 +7,7 @@ class TestViews:
 
     client = app.test_client()
 
-    def setup_class(self):
+    def setup_method(self):
         views.competitions = load_competitions('tests/data/test_competitions.json')
         views.clubs = load_clubs('tests/data/test_clubs.json')
 
@@ -46,7 +46,7 @@ class TestViews:
             "competition": competition_fixture['name'],
             "places": 1,
         }
-        sut = self.client.post("/purchase-places", data=data, follow_redirects=True)
+        sut = self.client.post("/purchase-places", data=data)
         assert sut.status_code == 200
         assert 'Great-booking complete!' in sut.data.decode()
 
@@ -56,7 +56,7 @@ class TestViews:
             "competition": competition_low_places_fixture['name'],
             "places": 5,
         }
-        sut = self.client.post("/purchase-places", data=data, follow_redirects=True)
+        sut = self.client.post("/purchase-places", data=data)
         assert sut.status_code == 200
         assert 'Not enough remaining places.' in sut.data.decode()
 
@@ -66,7 +66,7 @@ class TestViews:
             "competition": competition_fixture['name'],
             "places": 5,
         }
-        sut = self.client.post("/purchase-places", data=data, follow_redirects=True)
+        sut = self.client.post("/purchase-places", data=data)
         assert sut.status_code == 200
         assert 'You do not have enough points.' in sut.data.decode()
 
@@ -76,7 +76,7 @@ class TestViews:
             "competition": competition_fixture['name'],
             "places": 13,
         }
-        sut = self.client.post("/purchase-places", data=data, follow_redirects=True)
+        sut = self.client.post("/purchase-places", data=data)
         assert sut.status_code == 200
         assert f'You cannot book more than {views.MAX_PLACES_PER_CLUB} places.' in sut.data.decode()
 
