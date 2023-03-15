@@ -52,7 +52,8 @@ def purchase_places():
         elif places_required > MAX_PLACES_PER_CLUB:
             flash(f'You cannot book more than {MAX_PLACES_PER_CLUB} places.')
         else:
-            competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-places_required
+            competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
+            club['points'] = int(club['points']) - places_required
             flash('Great-booking complete!')
             return render_template('welcome.html', club=club, competitions=competitions)
 
