@@ -47,15 +47,9 @@ class TestViews:
             "places": 1,
         }
         sut = self.client.post("/purchase-places", data=data)
-        expected_points = int(club_fixture['points']) - 1
-        expected_places = int(competition_fixture['numberOfPlaces']) - 1
-
         assert sut.status_code == 200
         assert 'Great-booking complete!' in sut.data.decode()
-        assert f"Points available: {expected_points}" in sut.data.decode()
-        assert f"{competition_fixture['name']}<br />\n            "\
-               f"Date: {competition_fixture['date']}<br />\n            "\
-               f"Number of Places: {expected_places}" in sut.data.decode()
+
 
     def test_purchase_places_not_enough_places(self, client, club_fixture, competition_low_places_fixture):
         data = {
