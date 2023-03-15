@@ -14,7 +14,7 @@ def client():
 def club_fixture():
     data = {"name": "Simply Lift",
             "email": "john@simplylift.co",
-            "points": "15",
+            "points": "13",
             }
     return data
 
