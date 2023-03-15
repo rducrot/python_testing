@@ -1,4 +1,5 @@
 bin
+geckodriver.log
 include
 lib
 venv

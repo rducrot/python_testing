@@ -50,7 +50,6 @@ class TestViews:
         assert sut.status_code == 200
         assert 'Great-booking complete!' in sut.data.decode()
 
-
     def test_purchase_places_not_enough_places(self, client, club_fixture, competition_low_places_fixture):
         data = {
             "club": club_fixture['name'],
