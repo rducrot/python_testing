@@ -5,18 +5,15 @@ from gudlft.models import load_clubs, load_competitions
 app = Flask(__name__)
 app.config.from_object('config')
 
-competitions = load_competitions()
-clubs = load_clubs()
+competitions = load_competitions('gudlft/data/competitions.json')
+clubs = load_clubs('gudlft/data/clubs.json')
+
+MAX_PLACES_PER_CLUB = 12
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-@app.route('/clubs-points')
-def clubs_points():
-    return render_template('clubs_points.html', clubs=clubs)
 
 
 @app.route('/show-summary', methods=['POST'])
@@ -25,7 +22,7 @@ def show_summary():
         club = [club for club in clubs if club['email'] == request.form['email']][0]
         return render_template('welcome.html', club=club, competitions=competitions)
     except IndexError:
-        flash("Adresse mail inconnue ou non renseignée.")
+        flash("Unknown or missing mail address.")
         return redirect(url_for('index'))
 
 
@@ -44,13 +41,27 @@ def book(competition, club):
 def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
-    places_required = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-places_required
-    flash('Great-booking complete!')
-    return render_template('welcome.html', club=club, competitions=competitions)
+
+    if request.method == 'POST':
+        places_required = int(request.form['places'])
+
+        if places_required > int(competition['numberOfPlaces']):
+            flash('Not enough remaining places.')
+        elif places_required > int(club['points']):
+            flash('You do not have enough points.')
+        elif places_required > MAX_PLACES_PER_CLUB:
+            flash(f'You cannot book more than {MAX_PLACES_PER_CLUB} places.')
+        else:
+            competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-places_required
+            flash('Great-booking complete!')
+            return render_template('welcome.html', club=club, competitions=competitions)
+
+        return render_template('booking.html', club=club, competition=competition)
 
 
-# TODO: Add route for points display
+@app.route('/clubs-points')
+def clubs_points():
+    return render_template('clubs_points.html', clubs=clubs)
 
 
 @app.route('/logout')

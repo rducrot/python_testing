@@ -20,14 +20,8 @@ def club_fixture():
 
 
 @pytest.fixture
-def club_wrong_credential_fixture(club_fixture):
-    club_fixture["email"] = "toto@mail.com"
-    return club_fixture
-
-
-@pytest.fixture
-def club_no_credential_fixture(club_fixture):
-    club_fixture["email"] = ""
+def club_low_points_fixture(club_fixture):
+    club_fixture["name"] = "Not Enough Points"
     return club_fixture
 
 
@@ -38,3 +32,9 @@ def competition_fixture():
             "numberOfPlaces": "25",
             }
     return data
+
+
+@pytest.fixture
+def competition_low_places_fixture(competition_fixture):
+    competition_fixture["name"] = "Not Enough Places"
+    return competition_fixture
