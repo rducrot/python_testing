@@ -40,6 +40,11 @@ class TestViews:
         sut = client.get("/book/Spring%20Festival/Simply%20Lift")
         assert sut.status_code == 200
 
+    def test_book_finished_competition(self, client):
+        sut = client.get("/book/Finished/Simply%20Lift")
+        assert sut.status_code == 200
+        assert 'Competition is over' in sut.data.decode()
+
     def test_purchase_places(self, client, club_fixture, competition_fixture):
         data = {
             "club": club_fixture['name'],

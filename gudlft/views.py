@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 from gudlft.models import load_clubs, load_competitions
@@ -30,11 +32,15 @@ def show_summary():
 def book(competition, club):
     found_club = [c for c in clubs if c['name'] == club][0]
     found_competition = [c for c in competitions if c['name'] == competition][0]
-    if found_club and found_competition:
-        return render_template('booking.html', club=found_club, competition=found_competition)
+    if datetime.strptime(found_competition['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
+        flash("Competition is over")
     else:
-        flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        if found_club and found_competition:
+            return render_template('booking.html', club=found_club, competition=found_competition)
+        else:
+            flash("Something went wrong-please try again")
+
+    return render_template('welcome.html', club=found_club, competitions=competitions)
 
 
 @app.route('/purchase-places', methods=['POST'])
